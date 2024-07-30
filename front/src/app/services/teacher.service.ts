@@ -19,4 +19,5 @@ export class TeacherService {
   public detail(id: string): Observable<Teacher> {
     return this.httpClient.get<Teacher>(`${this.pathService}/${id}`);
   }
+
 }
