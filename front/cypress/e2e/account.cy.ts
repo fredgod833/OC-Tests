@@ -1,58 +1,42 @@
-describe('Account spec', () => {
+import {SESSIONS, ADMIN_USER, ADMIN_LOGIN, CHRISTINA_LOGIN, CHRISTINA_USER} from "./mocked-datas/services.responses";
 
-  const adminUser = {
-        id: 1,
-        email: 'yoga@studio.com',
-        lastName: 'Admin',
-        firstName: 'Admin',
-        admin: true,
-        password: 'test!1234',
-        createdAt: new Date(),
-        updatedAt: new Date()
-    }
+describe('Account tests', () => {
 
-    const normalUser = {
-        id: 3,
-        email: 'toto3@toto.com',
-        lastName: 'toto',
-        firstName: 'toto',
-        admin: false,
-        password: 'test!1234',
-        createdAt: new Date(),
-        updatedAt: new Date()
-    }
-
-    it('Test admin successfull', () => {
-        //cy.login(true)
-        cy.visit('/login')
-        cy.get('input[formControlName=email').type("yoga@studio.com")
-        cy.get('input[formControlName=password').type(`${"test!1234"}{enter}{enter}`)
-        cy.url().should('include', '/sessions')
-
-        cy.intercept('GET', '/api/user/1', adminUser).as('user')
-
-        cy.get('.link').contains('Account').click()
-
-        cy.url().should('include', '/me')
-
-        cy.get('p').contains('yoga@studio.com')
-        cy.get('.my2').contains('You are admin')
-    })
-
-    it('Test no admin successfull', () => {
-        //cy.login(false)
-        cy.visit('/login')
-        cy.get('input[formControlName=email').type("toto3@toto.com")
-        cy.get('input[formControlName=password').type(`${"test!1234"}{enter}{enter}`)
-        cy.url().should('include', '/sessions')
-
-        cy.intercept('GET', '/api/user/3', normalUser).as('user')
-
-        cy.get('.link').contains('Account').click()
-
-        cy.url().should('include', '/me')
-
-        cy.get('p').contains('toto3@toto.com')
-        cy.get(':button').contains('Detail')
-    })
+  beforeEach(() => {
+    //Mock session service
+    cy.intercept('GET', '/api/session', { statusCode:200, body:SESSIONS }).as("call sessions service");
   });
+
+  it('Should show is admin', () => {
+    //Mock login and user service
+    cy.intercept("POST","/api/auth/login", {statusCode:200, body:ADMIN_LOGIN}).as("call login service");
+    cy.intercept("GET","/api/user/*", {statusCode:200, body:ADMIN_USER}).as("call user service");
+
+    // login process
+    cy.login();
+
+    cy.get('.link').contains('Account').click();
+    cy.url().should('include', '/me');
+    //vérifier les infos
+    cy.get('p').contains('Admin ADMIN');
+    cy.get('p').contains('yoga@studio.com');
+    cy.get('p').contains('You are admin');
+
+  });
+
+  it('Should not show is admin', () => {
+
+    cy.intercept("POST","/api/auth/login", {statusCode:200, body:CHRISTINA_LOGIN}).as("call login service");
+    cy.intercept("GET","/api/user/*", {statusCode:200, body:CHRISTINA_USER}).as("call user service");
+    // login process
+    cy.login();
+
+    cy.get('.link').contains('Account').click();
+    cy.url().should('include', '/me');
+    cy.get('p').contains('Christina AGUILERA');
+    cy.get('p').contains('caguilera@studio.com');
+    cy.get(':button').contains('Detail');
+
+  });
+
+});

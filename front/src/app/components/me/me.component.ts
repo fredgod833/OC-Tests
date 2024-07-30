@@ -21,9 +21,12 @@ export class MeComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    console.log("init userInfo debut")
+    console.log(JSON.stringify(this.sessionService.sessionInformation))
     this.userService
       .getById(this.sessionService.sessionInformation!.id.toString())
       .subscribe((user: User) => this.user = user);
+    console.log("init userInfo fin")
   }
 
   public back(): void {

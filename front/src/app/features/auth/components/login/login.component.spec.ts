@@ -13,8 +13,6 @@ import {SessionInformation} from 'src/app/interfaces/sessionInformation.interfac
 import {LoginComponent} from './login.component';
 import {AuthService} from "../../services/auth.service";
 import {of, throwError} from "rxjs";
-import {ListComponent} from "../../../sessions/components/list/list.component";
-import {NgZone} from "@angular/core";
 import {Router} from "@angular/router";
 
 describe('LoginComponent', () => {
@@ -34,18 +32,20 @@ describe('LoginComponent', () => {
     logIn: jest.fn()
   }
 
+  const mockRouter = {
+    navigate: jest.fn()
+  }
+
   beforeEach(async () => {
 
     await TestBed.configureTestingModule({
       declarations: [LoginComponent],
       providers: [{ provide: AuthService, useValue: mockAuthService },
-        { provide: SessionService, useValue: mockSessionService }
+        { provide: SessionService, useValue: mockSessionService },
+        { provide: Router, useValue: mockRouter }
       ],
       imports: [
-        RouterTestingModule.withRoutes([
-              { path: '*', component: ListComponent },
-              { path: 'sessions', component: ListComponent }
-        ]),
+        RouterTestingModule,
         BrowserAnimationsModule,
         MatCardModule,
         MatIconModule,
@@ -56,9 +56,7 @@ describe('LoginComponent', () => {
       .compileComponents();
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
-
     fixture.detectChanges();
-
   });
 
   it('should create', () => {
@@ -69,6 +67,7 @@ describe('LoginComponent', () => {
     component.submit();
     expect(mockAuthService.login).toHaveBeenCalled();
     expect(mockSessionService.logIn).toHaveBeenCalled();
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/sessions']);
   });
 
   it('should display connection errors', () => {

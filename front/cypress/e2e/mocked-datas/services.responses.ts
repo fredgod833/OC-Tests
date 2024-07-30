@@ -8,7 +8,7 @@ export const ADMIN_LOGIN = {
   "admin": true,
 };
 
-export const CLIENT_LOGIN = {
+export const CHRISTINA_LOGIN = {
   "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5b2dhQHN0dWRpby5jb20iLCJpYXQiOjE3MTk0NzA3NTEsImV4cCI6MTcxOTU1NzE1MX0.f8LeF1JMeKa0wkzkVtD1TruOxiDeQk0rP7dqJ_8ynxHbzhAvysCoX6tdOxYtTt4nv8LOpoQMNw9JLUvsWYzN8A",
   "type": "Bearer",
   "id":2,
@@ -34,7 +34,7 @@ export const ADMIN_USER = {
   "updatedAt": "2024-04-19T18:22:28"
 };
 
-export const CLIENT_USER = {
+export const CHRISTINA_USER = {
   "id": 2,
   "email": "caguilera@studio.com",
   "firstName": "Christina",
@@ -44,25 +44,43 @@ export const CLIENT_USER = {
   "updatedAt": "2024-04-19T18:22:28"
 }
 
-export const SESSIONS = [
-  {
+export const CHRISTINA_TEACHER = {
+  "id": 1,
+  "lastName": 'Aguilera',
+  "firstName": 'Christina',
+  "createdAt":"2024-04-24T17:06:29",
+  "updatedAt":"2024-04-24T17:06:29"
+};
+
+export const TEACHER2 = {
+  "id": 2,
+  "lastName": 'Peel',
+  "firstName": 'William',
+  "createdAt":"2024-04-24T17:06:29",
+  "updatedAt":"2024-04-24T17:06:29"
+};
+
+export const CHRISTINA_SESSION =   {
     "id":1,
-    "name":"Yog Aguilera",
-    "date":"2032-08-05T00:00:00.000+00:00",
+    "name":"Yog' Aguilera",
+    "date":"2024-08-05T00:00:00.000+00:00",
     "teacher_id":2,
     "description":"Yoga with Christina",
-    "users":[],
+    "users":[1, 3],
     "createdAt":"2024-04-24T17:06:29",
     "updatedAt":"2024-04-24T17:06:29"
-  },
-  {
-    "id":2,
-    "name":"Peel Session",
-    "date":"2020-07-03T00:00:00.000+00:00",
-    "teacher_id":3,
-    "description":"Celebs William Peel Session",
-    "users":[],
-    "createdAt":"2024-04-24T17:15:10",
-    "updatedAt":"2024-04-24T17:15:10"
-  }
-];
+};
+
+export const SESSION2 = {
+  "id":2,
+  "name":"Peel Session",
+  "date":"2020-07-03T00:00:00.000+00:00",
+  "teacher_id":3,
+  "description":"Celebs William Peel Session",
+  "users":[1, 2, 3],
+  "createdAt":"2024-04-24T17:15:10",
+  "updatedAt":"2024-04-24T17:15:10"
+};
+
+export const SESSIONS = [CHRISTINA_SESSION, SESSION2];
+

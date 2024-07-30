@@ -12,8 +12,10 @@ import { expect } from '@jest/globals';
 import { RegisterComponent } from './register.component';
 import {AuthService} from "../../services/auth.service";
 import {of} from "rxjs";
+import {Router} from "@angular/router";
 
 describe('RegisterComponent', () => {
+
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
 
@@ -21,10 +23,15 @@ describe('RegisterComponent', () => {
     register: jest.fn().mockImplementation(() => of(undefined))
   }
 
+  const mockRouter = {
+    navigate: jest.fn()
+  }
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       providers: [
-        { provide: AuthService, useValue: mockAuthService }
+        { provide: AuthService, useValue: mockAuthService },
+        { provide: Router, useValue: mockRouter }
       ],
       declarations: [RegisterComponent],
       imports: [
